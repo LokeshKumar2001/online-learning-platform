@@ -1,13 +1,17 @@
-import { Book, Clock, Loader2Icon, Settings } from "lucide-react";
+import { Book, Clock, Loader2Icon, PlayCircle, Settings } from "lucide-react";
 import React, { useState } from "react";
 import { TrendingUp } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import Link from "next/link";
 
-function CourseInfo({ course }) {
+function CourseInfo({ course, viewCourse }) {
   const courseLayout = course?.courseJson?.course;
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const GenerateCourseContent = async () => {
     // Call API to Generate
     setLoading(true);
@@ -19,9 +23,12 @@ function CourseInfo({ course }) {
       });
       console.log((await result).data);
       setLoading(false);
+      router.replace("/workspace");
+      toast.success("Course Generated successfully");
     } catch (e) {
       console.log(e);
       setLoading(false);
+      toast.error("Server Side error, Try Again!");
     }
   };
 
@@ -55,10 +62,18 @@ function CourseInfo({ course }) {
             </section>
           </div>
         </div>
-        <Button onClick={GenerateCourseContent} className={"max-w-sm"}>
-          {loading ? <Loader2Icon className="animate-spin" /> : <Settings />}
-          Generate Content
-        </Button>
+        {!viewCourse ? (
+          <Button onClick={GenerateCourseContent} className={"max-w-sm"}>
+            {loading ? <Loader2Icon className="animate-spin" /> : <Settings />}
+            Generate Content
+          </Button>
+        ) : (
+          <Link href={"/course/" + course?.cid}>
+            <Button>
+              <PlayCircle /> Continue Learning
+            </Button>
+          </Link>
+        )}
       </div>
       <Image
         src={course?.bannerImageUrl}
