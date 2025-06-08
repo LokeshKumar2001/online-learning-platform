@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { SelectedChapterIndexContext } from "@/context/SelectedChapterIndexContext";
+import { CheckCircle } from "lucide-react";
 
 function ChapterListSidebar({ courseInfo }) {
   const course = courseInfo?.courses;
@@ -14,6 +15,7 @@ function ChapterListSidebar({ courseInfo }) {
   const { selectedChapterIndex, setSelectedChapterIndex } = useContext(
     SelectedChapterIndexContext
   );
+  let completedChapter = enrollCourse?.completedChapters ?? [];
 
   return (
     <div className="w-80 bg-secondary h-screen p-5">
@@ -27,13 +29,26 @@ function ChapterListSidebar({ courseInfo }) {
             key={index}
             onClick={() => setSelectedChapterIndex(index)}
           >
-            <AccordionTrigger className={"text-lg font-medium"}>
+            <AccordionTrigger
+              className={`text-lg font-medium px-5 ${
+                completedChapter.includes(index)
+                  ? "bg-green-100 text-green-800"
+                  : ""
+              }`}
+            >
               {index + 1}. {chapter?.courseData?.chapterName}
             </AccordionTrigger>
             <AccordionContent asChild>
               <div className="">
-                {chapter?.courseData?.topics.map((topic, index) => (
-                  <h2 key={index} className="p-3 bg-white my-1 rounded-lg">
+                {chapter?.courseData?.topics.map((topic, index_) => (
+                  <h2
+                    key={index_}
+                    className={`p-3  my-1 rounded-lg ${
+                      completedChapter.includes(index)
+                        ? "bg-green-100 text-green-800"
+                        : "bg-white"
+                    }`}
+                  >
                     {topic?.topic}
                   </h2>
                 ))}
