@@ -33,7 +33,7 @@ function CourseCard({ course }) {
     <div className="shadow rounded-xl">
       <Image
         src={course?.bannerImageUrl}
-        alt={course?.name}
+        alt={course?.name || "Course Banner"}
         width={400}
         height={300}
         className="w-full aspect-video rounded-t-xl object-cover"

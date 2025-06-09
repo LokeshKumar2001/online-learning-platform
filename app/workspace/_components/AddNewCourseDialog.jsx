@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2Icon, Sparkle } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function AddNewCourseDialog({ children }) {
   const [loading, setLoading] = useState(false);
@@ -53,7 +54,11 @@ function AddNewCourseDialog({ children }) {
         ...formData,
         courseId: courseId,
       });
-      console.log(result.data);
+
+      if (result.data.resp == "limit exceed") {
+        toast.warning("Please subscribe to plan");
+        router.push("/workspace/billing");
+      }
       setLoading(false);
       router.push("/workspace/edit-course/" + result.data?.courseId);
     } catch (e) {

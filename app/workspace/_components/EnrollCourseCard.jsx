@@ -7,12 +7,21 @@ import React from "react";
 
 function EnrollCourseCard({ course, enrollCourse }) {
   const courseJson = course?.courseJson?.course;
-  const CalculatePerProgress = () => {
+  /*const CalculatePerProgress = () => {
     return (
       (enrollCourse?.completedChapters?.length ??
         0 / course?.courseContent?.length) * 100
     );
+  };*/
+  const CalculatePerProgress = () => {
+    const completed = enrollCourse?.completedChapters?.length ?? 0;
+    const total = course?.courseContent?.length ?? 0;
+
+    if (total === 0) return 0; // Avoid division by zero
+
+    return Math.round((completed / total) * 100);
   };
+
   return (
     <div className="shadow rounded-xl">
       <Image
@@ -29,7 +38,7 @@ function EnrollCourseCard({ course, enrollCourse }) {
         </p>
         <div className="">
           <h2 className="flex justify-between text-sm text-primary">
-            Progress<span>{CalculatePerProgress()}</span>
+            Progress<span>{CalculatePerProgress()}%</span>
           </h2>
 
           <Progress value={CalculatePerProgress()} />
