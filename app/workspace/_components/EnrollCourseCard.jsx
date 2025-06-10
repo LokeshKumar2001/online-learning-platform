@@ -24,13 +24,16 @@ function EnrollCourseCard({ course, enrollCourse }) {
 
   return (
     <div className="shadow rounded-xl">
-      <Image
-        src={course?.bannerImageUrl}
-        alt={course?.name}
-        width={400}
-        height={300}
-        className="w-full aspect-video rounded-t-xl object-cover"
-      />
+      {course?.bannerImageUrl && (
+        <Image
+          src={course.bannerImageUrl}
+          alt={course?.name || "Course Image"}
+          width={400}
+          height={300}
+          className="w-full aspect-video rounded-t-xl object-cover"
+        />
+      )}
+
       <div className="p-3 flex flex-col gap-3">
         <h2 className="font-bold text-lg">{courseJson?.name}</h2>
         <p className="line-clamp-3 text-gray-400 text-sm">
